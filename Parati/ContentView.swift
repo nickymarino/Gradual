@@ -12,7 +12,11 @@ struct ContentView: View {
     @State var gradientA: [Color] = [Color(#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)), Color(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))]
     @State var gradientB: [Color] = [Color(#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)), Color(#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1))]
     @State var useGradientA: Bool = true
+    
     @State var isTapped: Bool = false
+    
+    @State var viewState = CGSize.zero
+    @State var isDragging = false
     
     func setGradient(_ value: [Color]) {
         useGradientA.toggle()
@@ -37,8 +41,14 @@ struct ContentView: View {
                     .animation(.easeInOut)
             }
             .padding(30)
+            .offset(x: viewState.width / 20, y: viewState.height / 20)
+            // Tap effects
             .scaleEffect(isTapped ? 1.05 : 1)
             .animation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0))
+            // Drag effects
+            .scaleEffect(isDragging ? 0.95 : 1)
+            .animation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.8))
+            .rotation3DEffect(.degrees(3), axis: (x: viewState.width, y: viewState.height, z: 0))
             .onTapGesture {
                 self.isTapped = true
                 self.useGradientA.toggle()
@@ -46,6 +56,16 @@ struct ContentView: View {
                     self.isTapped = false
                 }
             }
+            .gesture(
+                DragGesture().onChanged { value in
+                    self.viewState = value.translation
+                    self.isDragging = true
+                }
+                .onEnded { value in
+                    self.viewState = .zero
+                    self.isDragging = false
+                }
+            )
             
             Spacer()
             
