@@ -33,28 +33,39 @@ class GradientFactory {
     }
 }
 
-struct ContentView: View {
-    @State var gradientA: [Color] = [Color(#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)), Color(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))]
-    @State var gradientB: [Color] = [Color(#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)), Color(#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1))]
-    @State var useGradientA: Bool = true
-    
-    let gradientFactory = GradientFactory()
-    
-    func changeGradient() {
+class GradientSwitcher: ObservableObject {
+    @Published var first: [Color] = [Color(#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)), Color(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))]
+    @Published var second: [Color] = [Color(#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)), Color(#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1))]
+    @Published var useFirst: Bool = true
+
+    private var gradientFactory = GradientFactory()
+
+    func change() {
         let nextGradient = gradientFactory.next()
-        
-        useGradientA.toggle()
-        if useGradientA {
-            gradientA = nextGradient
+
+        useFirst.toggle()
+        if useFirst {
+            first = nextGradient
         }
         else {
-            gradientB = nextGradient
+            second = nextGradient
         }
     }
+        
+    func bottomColor() -> Color {
+        if useFirst {
+            return first[1]
+        }
+        return second[1]
+    }
+}
+
+struct ContentView: View {
+    @ObservedObject var gradients = GradientSwitcher()
     
     var body: some View {
         VStack {
-            CardView(gradientA: $gradientA, gradientB: $gradientB, useGradientA: $useGradientA, onTapAction: { self.changeGradient() })
+            CardView(gradients: gradients, onTapAction: { self.gradients.change() })
             
             Spacer()
             
@@ -66,7 +77,7 @@ struct ContentView: View {
                 // https://swiftui.gallery/uploads/code/ShareSheet.html
                 ButtonView(systemName: "square.and.arrow.up", action: {})
                 Spacer()
-                ButtonView(systemName: "goforward", action: { self.changeGradient() })
+                ButtonView(systemName: "goforward", action: { self.gradients.change() })
                 Spacer()
             }
             .padding(.horizontal)
@@ -74,16 +85,14 @@ struct ContentView: View {
             .font(.system(size: 25, weight: .medium))
             .foregroundColor(Color.white)
             // Use ColorMultiply because the animation can't control the foreground color
-            .colorMultiply(self.useGradientA ? gradientA[1] : gradientB[1])
+                .colorMultiply(self.gradients.bottomColor())
             .animation(.easeInOut)
         }
     }
 }
 
 struct CardView: View {
-    @Binding var gradientA: [Color]
-    @Binding var gradientB: [Color]
-    @Binding var useGradientA: Bool
+    @ObservedObject var gradients: GradientSwitcher
     var onTapAction: () -> Void
     
     @State var isTapped: Bool = false
@@ -93,12 +102,12 @@ struct CardView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .fill(LinearGradient(gradient: Gradient(colors: self.gradientA), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
-                .opacity(self.useGradientA ? 1 : 0)
+                .fill(LinearGradient(gradient: Gradient(colors: self.gradients.first), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
+                .opacity(self.gradients.useFirst ? 1 : 0)
                 .animation(.easeInOut)
             RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .fill(LinearGradient(gradient: Gradient(colors: self.gradientB), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
-                .opacity(self.useGradientA ? 0 : 1)
+                .fill(LinearGradient(gradient: Gradient(colors: self.gradients.second), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
+                .opacity(self.gradients.useFirst ? 0 : 1)
                 .animation(.easeInOut)
         }
         .padding(30)
