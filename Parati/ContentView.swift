@@ -9,9 +9,7 @@
 import SwiftUI
 
 class GradientFactory {
-    private var currentIndex: Int = 0
-    private var lastIndex: Int? = nil
-    private let gradients: [[Color]] = [
+    var gradients: [[Color]] = [
         [Color(#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)), Color(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))],
         [Color(#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)), Color(#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1))],
         [Color(#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)), Color(#colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1))],
@@ -20,8 +18,12 @@ class GradientFactory {
         [Color(#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)), Color(#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1))],
     ]
     
+    private var currentIndex: Int = 0
+    private var lastIndex: Int? = nil
+    
     func next() -> [Color] {
-        if lastIndex != nil {
+        if (gradients.count > 1) && (lastIndex != nil) {
+            // Keep drawing until the last used color isn't chosen
             repeat {
                 currentIndex = gradients.indices.randomElement()!
             } while (currentIndex == lastIndex)
@@ -39,6 +41,17 @@ class GradientSwitcher: ObservableObject {
     @Published var useFirst: Bool = true
 
     private var gradientFactory = GradientFactory()
+    
+    init() { }
+    
+    /// Permanently sets the gradient to one flat color
+    /// - Parameter color: the color for the gradient to be set to
+    init(freezeOn color: Color) {
+        let gradient = [color, color]
+        self.first = gradient
+        self.second = gradient
+        self.gradientFactory.gradients = [gradient]
+    }
 
     func change() {
         let nextGradient = gradientFactory.next()
@@ -69,25 +82,10 @@ struct ContentView: View {
             
             Spacer()
             
-            HStack {
-                Spacer()
-                ButtonView(systemName: "info.circle", action: {})
-                Spacer()
-                // https://developer.apple.com/forums/thread/123951
-                // https://swiftui.gallery/uploads/code/ShareSheet.html
-                ButtonView(systemName: "square.and.arrow.up", action: {})
-                Spacer()
-                ButtonView(systemName: "goforward", action: { self.gradients.change() })
-                Spacer()
-            }
-            .padding(.horizontal)
-            .offset(x: 0, y: -10)
-            .font(.system(size: 25, weight: .medium))
-            .foregroundColor(Color.white)
-            // Use ColorMultiply because the animation can't control the foreground color
-                .colorMultiply(self.gradients.bottomColor())
-            .animation(.easeInOut)
+            ButtonStackView(gradients: gradients)
         }
+        // Randomly pick a new gradient when the view loads for the first time
+        .onAppear(perform: { self.gradients.change() })
     }
 }
 
@@ -130,33 +128,6 @@ struct CardView: View {
                     }
                 }
         }
-    }
-}
-
-struct ButtonView: View {
-    var systemName: String
-    var action: () -> Void
-    
-    @State var isTapped: Bool = false
-    @State var isDebounced: Bool = false
-    
-    var body: some View {
-        Image(systemName: systemName)
-            .scaleEffect(isTapped ? 1.15 : 1)
-            .animation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0))
-            .onTapGesture {
-                if !self.isDebounced {
-                    self.isTapped = true
-                    self.isDebounced = true
-                    self.action()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        self.isTapped = false
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                        self.isDebounced = false
-                    }
-                }
-            }
     }
 }
 
