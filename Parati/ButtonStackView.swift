@@ -11,7 +11,7 @@ import UIKit
 
 
 struct ButtonStackView: View {
-    @ObservedObject var gradients: GradientSwitcher
+    @ObservedObject var palettes: PaletteSwitcher
     
     @State private var showingShareSheet = false
     @State private var testme = false
@@ -24,13 +24,13 @@ struct ButtonStackView: View {
             // https://developer.apple.com/forums/thread/123951
             ButtonView(systemName: "square.and.arrow.up", action: { self.showingShareSheet = true })
             Spacer()
-            ButtonView(systemName: "goforward", action: { self.gradients.change() })
+            ButtonView(systemName: "goforward", action: { self.palettes.rotate() })
             Spacer()
         }
         .font(.system(size: 25, weight: .medium))
         .foregroundColor(Color.white)
         // Use ColorMultiply because the animation can't control the foreground color
-        .colorMultiply(self.gradients.topColor())
+        .colorMultiply(self.palettes.current().accent)
         .animation(.easeInOut)
     }
 }
@@ -64,6 +64,6 @@ struct ButtonView: View {
 
 struct ButtonStackView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonStackView(gradients: GradientSwitcher())
+        ButtonStackView(palettes: PaletteSwitcher())
     }
 }

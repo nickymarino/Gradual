@@ -9,16 +9,16 @@
 import SwiftUI
 
 struct CardView: View {
-    @ObservedObject var gradients: GradientSwitcher
+    @ObservedObject var palettes: PaletteSwitcher
     
     var body: some View {
         ZStack {
             Rectangle()
-                .fill(LinearGradient(gradient: Gradient(colors: self.gradients.first), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
-                .opacity(self.gradients.useFirst ? 1 : 0)
+                .fill(LinearGradient(gradient: self.palettes.first.gradient(), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
+                .opacity(self.palettes.useFirst ? 1 : 0)
             Rectangle()
-                .fill(LinearGradient(gradient: Gradient(colors: self.gradients.second), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
-                .opacity(self.gradients.useFirst ? 0 : 1)
+                .fill(LinearGradient(gradient: self.palettes.second.gradient(), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
+                .opacity(self.palettes.useFirst ? 0 : 1)
         }
         .animation(.easeInOut)
     }
@@ -30,6 +30,6 @@ func haptic(type: UINotificationFeedbackGenerator.FeedbackType) {
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        CardView(gradients: GradientSwitcher(gradient: [.red, .orange]))
+        CardView(palettes: PaletteSwitcher(single: Palette(firstPrimary: .red, secondPrimary: .orange, accent: .white)))
     }
 }
