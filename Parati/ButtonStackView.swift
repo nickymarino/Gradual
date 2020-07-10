@@ -7,16 +7,19 @@
 //
 
 import SwiftUI
+import UIKit
+
 
 struct ButtonStackView: View {
     @ObservedObject var gradients: GradientSwitcher
     
     @State private var showingShareSheet = false
+    @State private var testme = false
     
     var body: some View {
         HStack {
             Spacer()
-            ButtonView(systemName: "info.circle", action: {})
+            ButtonView(systemName: "info.circle", action: {self.testme = true})
             Spacer()
             // https://developer.apple.com/forums/thread/123951
             ButtonView(systemName: "square.and.arrow.up", action: { self.showingShareSheet = true })
@@ -24,19 +27,13 @@ struct ButtonStackView: View {
             ButtonView(systemName: "goforward", action: { self.gradients.change() })
             Spacer()
         }
-        .padding(.horizontal)
-        .offset(x: 0, y: -10)
         .font(.system(size: 25, weight: .medium))
         .foregroundColor(Color.white)
-            // Use ColorMultiply because the animation can't control the foreground color
-            .colorMultiply(self.gradients.bottomColor())
-            .animation(.easeInOut)
-            .sheet(isPresented: $showingShareSheet,
-                   content: {
-                    ActivityView(activityItems: [NSURL(string: "https://nickymarino.com")!] as [Any], applicationActivities: nil) })
+        // Use ColorMultiply because the animation can't control the foreground color
+        .colorMultiply(self.gradients.topColor())
+        .animation(.easeInOut)
     }
 }
-
 
 struct ButtonView: View {
     var systemName: String
@@ -67,6 +64,6 @@ struct ButtonView: View {
 
 struct ButtonStackView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonStackView(gradients: GradientSwitcher(freezeOn: Color.black))
+        ButtonStackView(gradients: GradientSwitcher())
     }
 }

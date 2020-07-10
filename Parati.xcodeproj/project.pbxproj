@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1D0A739524B6D3CB0028D959 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0A739424B6D3CB0028D959 /* ActivityView.swift */; };
 		1D0A739724B6D4720028D959 /* ButtonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0A739624B6D4720028D959 /* ButtonStackView.swift */; };
+		1D0A73B924B809EA0028D959 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0A73B824B809EA0028D959 /* CardView.swift */; };
 		1D4CEF3024B56D34003BA630 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4CEF2F24B56D34003BA630 /* AppDelegate.swift */; };
 		1D4CEF3224B56D34003BA630 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4CEF3124B56D34003BA630 /* SceneDelegate.swift */; };
 		1D4CEF3424B56D34003BA630 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4CEF3324B56D34003BA630 /* ContentView.swift */; };
@@ -20,6 +21,7 @@
 /* Begin PBXFileReference section */
 		1D0A739424B6D3CB0028D959 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		1D0A739624B6D4720028D959 /* ButtonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStackView.swift; sourceTree = "<group>"; };
+		1D0A73B824B809EA0028D959 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		1D4CEF2C24B56D33003BA630 /* Parati.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parati.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D4CEF2F24B56D34003BA630 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1D4CEF3124B56D34003BA630 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				1D4CEF2F24B56D34003BA630 /* AppDelegate.swift */,
 				1D4CEF3124B56D34003BA630 /* SceneDelegate.swift */,
 				1D4CEF3324B56D34003BA630 /* ContentView.swift */,
+				1D0A73B824B809EA0028D959 /* CardView.swift */,
 				1D0A739624B6D4720028D959 /* ButtonStackView.swift */,
 				1D0A739424B6D3CB0028D959 /* ActivityView.swift */,
 				1D4CEF3524B56D36003BA630 /* Assets.xcassets */,
@@ -156,6 +159,7 @@
 				1D0A739724B6D4720028D959 /* ButtonStackView.swift in Sources */,
 				1D0A739524B6D3CB0028D959 /* ActivityView.swift in Sources */,
 				1D4CEF3224B56D34003BA630 /* SceneDelegate.swift in Sources */,
+				1D0A73B924B809EA0028D959 /* CardView.swift in Sources */,
 				1D4CEF3424B56D34003BA630 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+
 class GradientFactory {
     var gradients: [[Color]] = [
         [Color(#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)), Color(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))],
@@ -44,13 +45,18 @@ class GradientSwitcher: ObservableObject {
     
     init() { }
     
-    /// Permanently sets the gradient to one flat color
-    /// - Parameter color: the color for the gradient to be set to
-    init(freezeOn color: Color) {
-        let gradient = [color, color]
+    /// Permanently sets the gradient
+    /// - Parameter gradient: the single gradient to be used
+    init(gradient: [Color]) {
         self.first = gradient
         self.second = gradient
         self.gradientFactory.gradients = [gradient]
+    }
+    
+    /// Permanently sets the gradient to one flat color
+    /// - Parameter color: the color for the gradient to be set to
+    convenience init(freezeOn color: Color) {
+        self.init(gradient: [color, color])
     }
 
     func change() {
@@ -64,70 +70,40 @@ class GradientSwitcher: ObservableObject {
             second = nextGradient
         }
     }
+    
+    func topColor() -> Color {
+        return useFirst ? first[0] : second[0]
+    }
         
     func bottomColor() -> Color {
-        if useFirst {
-            return first[1]
-        }
-        return second[1]
+        return useFirst ? first[1] : second[1]
     }
 }
 
 struct ContentView: View {
     @ObservedObject var gradients = GradientSwitcher()
-    
-    var body: some View {
-        VStack {
-            CardView(gradients: gradients, onTapAction: { self.gradients.change() })
-            
-            Spacer()
-            
-            ButtonStackView(gradients: gradients)
-        }
-        // Randomly pick a new gradient when the view loads for the first time
-        .onAppear(perform: { self.gradients.change() })
-    }
-}
-
-struct CardView: View {
-    @ObservedObject var gradients: GradientSwitcher
-    var onTapAction: () -> Void
-    
-    @State var isTapped: Bool = false
-    @State var isDebounced: Bool = false
-    @State var viewState = CGSize.zero
+    @State private var hideUI = false
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .fill(LinearGradient(gradient: Gradient(colors: self.gradients.first), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
-                .opacity(self.gradients.useFirst ? 1 : 0)
-                .animation(.easeInOut)
-            RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .fill(LinearGradient(gradient: Gradient(colors: self.gradients.second), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 1)))
-                .opacity(self.gradients.useFirst ? 0 : 1)
-                .animation(.easeInOut)
-        }
-        .padding(30)
-        .offset(x: viewState.width / 20, y: viewState.height / 20)
-            // Tap effects
-            .scaleEffect(isTapped ? 1.05 : 1)
-            .animation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0))
-            .onTapGesture {
-                if !self.isDebounced {
-                    self.isTapped = true
-                    self.isDebounced = true
-                    
-                    self.onTapAction()
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        self.isTapped = false
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                        self.isDebounced = false
-                    }
+            CardView(gradients: gradients)
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    self.hideUI.toggle()
                 }
+            
+            VStack {
+                Spacer()
+                ButtonStackView(gradients: gradients)
+                    .padding(.horizontal)
+                    .offset(x: 0, y: -10)
+                    .opacity(hideUI ? 0 : 1)
+            }
         }
+        .statusBar(hidden: hideUI)
+        .animation(.easeInOut)
+        // Randomly pick a new gradient when the view loads for the first time
+        .onAppear(perform: { self.gradients.change() })
     }
 }
 
@@ -136,3 +112,5 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+let screen = UIScreen.main.bounds

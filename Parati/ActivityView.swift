@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct ActivityView: UIViewControllerRepresentable {
-
     let activityItems: [Any]
     let applicationActivities: [UIActivity]?
 
