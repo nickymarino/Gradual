@@ -8,6 +8,14 @@
 
 import SwiftUI
 
+extension Color {
+    static func random() -> Color {
+        return Color(red: .random(in: 0...1),
+                     green: .random(in: 0...1),
+                     blue: .random(in: 0...1))
+    }
+}
+
 struct Palette {
     var firstPrimary: Color
     var secondPrimary: Color
@@ -29,7 +37,7 @@ class PaletteFactory {
             return randomPredefinedPalette()
         }
         
-        return Palette(firstPrimary: Color(#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)), secondPrimary: Color(#colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1)), accent: Color(#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)))
+        return Palette(firstPrimary: Color.random(), secondPrimary: Color.random(), accent: Color.random())
     }
     
     func randomPredefinedPalette() -> Palette {
