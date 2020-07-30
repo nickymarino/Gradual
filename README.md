@@ -1,2 +1,2 @@
-# Parati
+# Gradual
 

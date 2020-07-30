@@ -1,8 +1,8 @@
 //
 //  SceneDelegate.swift
-//  Parati
+//  Gradual
 //
-//  Created by Nicky Marino on 7/7/20.
+//  Created by Nicky Marino on 7/29/20.
 //  Copyright © 2020 Nicky Marino. All rights reserved.
 //
 
