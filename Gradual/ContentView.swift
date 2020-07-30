@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+let screen = UIScreen.main.bounds
+
 struct ContentView: View {
     @State var image = UIImage()
     @State var showShareSheet = false
@@ -28,6 +30,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             GradientView(colors: $currentColors, image: $image, onClick: {self.showShareSheet = true})
+            .frame(width: 200, height: 400)
             
             VStack {
                 Spacer()
@@ -70,6 +73,19 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+extension UIImage {
+    func aspectFitToHeight(_ newHeight: CGFloat) -> UIImage {
+        let scale = newHeight / self.size.height
+        let newWidth = self.size.width * scale
+        let newSize = CGSize(width: newWidth, height: newHeight)
+        let renderer = UIGraphicsImageRenderer(size: newSize)
+        
+        return renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: newSize))
+        }
+    }
+}
+
 extension UIView {
     var renderedImage: UIImage {
         // rect of capure
@@ -92,6 +108,6 @@ extension View {
         hosting.view.frame = window.frame
         window.addSubview(hosting.view)
         window.makeKeyAndVisible()
-        return hosting.view.renderedImage
+        return hosting.view.renderedImage.aspectFitToHeight(screen.height)
     }
 }
