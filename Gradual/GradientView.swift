@@ -20,8 +20,9 @@ struct GradientView: View {
     @Binding var image: UIImage
     @Binding var showShareSheet: Bool
     @Binding var captureGradient: Bool
-
     @State private var lastScreenshot = Date()
+    
+    @State var isTapped = false
 
     var body: some View {
         GradientSubView(colors: $colors, image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient, lastScreenshot: $lastScreenshot)

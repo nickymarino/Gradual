@@ -14,7 +14,8 @@ struct ContentView: View {
     @State var image = UIImage()
     @State var showShareSheet = false
     @State var captureGradient = false
-    @State var testVar = false
+    
+    @State var isTapped = false
     
     @State var colorIndex = 0
     @State var colorSets = [
@@ -32,38 +33,44 @@ struct ContentView: View {
     }
     
     var body: some View {
-        ZStack {
+        VStack {
             GradientView(colors: $currentColors, image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
-            .frame(width: 300, height: 600)
+                .frame(width: 300, height: 600)
                 .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                .shadow(color: currentColors[0].opacity(0.1), radius: 5, x: 2, y: 2)
+                .padding(.bottom)
+                .scaleEffect(isTapped ? 1.05 : 1)
+                .animation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0))
+                .onTapGesture {
+                    self.isTapped = true
+                    self.nextColors()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        self.isTapped = false
+                    }
+            }
             
-            VStack {
+            HStack {
                 Spacer()
-                
-                HStack {
-                    Spacer()
-                    Image(systemName: "arrow.2.circlepath.circle")
-                        .font(.system(.largeTitle))
-                        .onTapGesture {
-                            self.nextColors()
-                            self.testVar = true
-                    }
-                    Spacer()
-                    Image(systemName: "square.and.arrow.up")
-                        .font(.system(.largeTitle))
-                        .onTapGesture {
-                            self.captureGradient = true
-                    }
-                    Spacer()
+                Image(systemName: "arrow.2.circlepath.circle")
+                    .font(.system(.largeTitle))
+                    .onTapGesture {
+                        self.nextColors()
                 }
-            }.padding()
+                Spacer()
+                Image(systemName: "square.and.arrow.up")
+                    .font(.system(.largeTitle))
+                    .onTapGesture {
+                        self.captureGradient = true
+                }
+                Spacer()
+            }
             
-        }        .sheet(isPresented: $showShareSheet, onDismiss: {self.showShareSheet = false},
-                        content: {
-                            ActivityView(activityItems: [self.image] as [Any], applicationActivities: nil) })
+            }
+        .sheet(isPresented: $showShareSheet, onDismiss: {self.showShareSheet = false}) {
+            ActivityView(activityItems: [self.image] as [Any], applicationActivities: nil)
+        }
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
