@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1DA296C224D3B2F4001ADC75 /* OnChangedShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA296C124D3B2F4001ADC75 /* OnChangedShim.swift */; };
+		1DA296C424D3C141001ADC75 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA296C324D3C141001ADC75 /* GradientView.swift */; };
 		1DE6F9B724D2738D005DBAD4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE6F9B624D2738D005DBAD4 /* AppDelegate.swift */; };
 		1DE6F9B924D2738D005DBAD4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE6F9B824D2738D005DBAD4 /* SceneDelegate.swift */; };
 		1DE6F9BB24D2738D005DBAD4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE6F9BA24D2738D005DBAD4 /* ContentView.swift */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1DA296C124D3B2F4001ADC75 /* OnChangedShim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnChangedShim.swift; sourceTree = "<group>"; };
+		1DA296C324D3C141001ADC75 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		1DE6F9B324D2738D005DBAD4 /* Gradual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gradual.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DE6F9B624D2738D005DBAD4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1DE6F9B824D2738D005DBAD4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +65,8 @@
 				1DE6F9B624D2738D005DBAD4 /* AppDelegate.swift */,
 				1DE6F9B824D2738D005DBAD4 /* SceneDelegate.swift */,
 				1DE6F9BA24D2738D005DBAD4 /* ContentView.swift */,
+				1DA296C324D3C141001ADC75 /* GradientView.swift */,
+				1DA296C124D3B2F4001ADC75 /* OnChangedShim.swift */,
 				1DE6F9D024D27852005DBAD4 /* UIViewRepresentables */,
 				1DE6F9BC24D2738E005DBAD4 /* Assets.xcassets */,
 				1DE6F9C124D2738E005DBAD4 /* LaunchScreen.storyboard */,
@@ -157,7 +163,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DA296C224D3B2F4001ADC75 /* OnChangedShim.swift in Sources */,
 				1DE6F9B724D2738D005DBAD4 /* AppDelegate.swift in Sources */,
+				1DA296C424D3C141001ADC75 /* GradientView.swift in Sources */,
 				1DE6F9D224D27870005DBAD4 /* ActivityView.swift in Sources */,
 				1DE6F9B924D2738D005DBAD4 /* SceneDelegate.swift in Sources */,
 				1DE6F9BB24D2738D005DBAD4 /* ContentView.swift in Sources */,
