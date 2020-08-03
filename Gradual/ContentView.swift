@@ -15,46 +15,19 @@ struct ContentView: View {
     @State var showShareSheet = false
     @State var captureGradient = false
     
-    @State var isTapped = false
-    
-    @State var colorIndex = 0
-    @State var colorSets = [
-        [Color.pink, Color.yellow],
-        [Color.red, Color.purple],
-        [Color.green, Color.white],
-        [Color.purple, Color.black]
-    ]
-    @State var currentColors = [Color.purple, Color.black]
-    
-    func nextColors() {
-        colorIndex = (colorIndex + 1) % colorSets.count
-        print(colorIndex)
-        currentColors = colorSets[colorIndex]
-    }
-    
     var body: some View {
         VStack {
-            GradientView(colors: $currentColors, image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
+            CardView(image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
                 .frame(width: 300, height: 600)
-                .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                .shadow(color: currentColors[0].opacity(0.1), radius: 5, x: 2, y: 2)
                 .padding(.bottom)
-                .scaleEffect(isTapped ? 1.05 : 1)
-                .animation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0))
-                .onTapGesture {
-                    self.isTapped = true
-                    self.nextColors()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        self.isTapped = false
-                    }
-            }
+            
             
             HStack {
                 Spacer()
                 Image(systemName: "arrow.2.circlepath.circle")
                     .font(.system(.largeTitle))
                     .onTapGesture {
-                        self.nextColors()
+//                        self.nextColors()
                 }
                 Spacer()
                 Image(systemName: "square.and.arrow.up")
