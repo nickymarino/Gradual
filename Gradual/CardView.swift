@@ -17,51 +17,39 @@ struct CardView: View {
     @Binding var captureGradient: Bool
     
     @State private var isTapped = false
-    @State private var showTopGradient = true
-    @State private var colorIndex = 0
-    @State private var colorSets = [
-        [Color.pink, Color.yellow],
-        [Color.red, Color.purple],
-        [Color.green, Color.white],
-        [Color.purple, Color.black]
-    ]
-    @State private var topColors = [Color.orange, Color.blue]
-    @State private var bottomColors = [Color.yellow, Color.green]
-    
-    func newColor() -> [Color] {
-        colorIndex = (colorIndex + 1) % colorSets.count
-        print(colorIndex)
-        return colorSets[colorIndex]
+    @State private var showFirstGradient = true
+
+    @ObservedObject private var firstPalette = Palette()
+    @ObservedObject private var secondPalette = Palette()
+
+    func swapGradients() {
+        // Hide the old gradient
+        self.showFirstGradient.toggle()
+        print(self.showFirstGradient)
+
+        // Shuffle the palette for the newly hidden gradient
+        let palette = !self.showFirstGradient ? self.firstPalette : self.secondPalette
+        palette.shuffle()
     }
-    
-    func setNextColors() {
-        let set = newColor()
-        if showTopGradient {
-            bottomColors = set
-        } else {
-            topColors = set
-        }
-    }
-    
+
     var body: some View {
         ZStack {
             // SwiftUI can't animate changes in a LinearGradient (yet), so use two
             // gradients and switch between them with an opacity animation
-            GradientView(colors: $topColors, image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
-                .opacity(showTopGradient ? 0 : 1)
+            GradientView(colors: $firstPalette.colors, image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
+                .opacity(showFirstGradient ? 0 : 1)
             
-            GradientView(colors: $bottomColors, image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
-                .opacity(showTopGradient ? 1 : 0)
+            GradientView(colors: $secondPalette.colors, image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
+                .opacity(showFirstGradient ? 1 : 0)
         }
         .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-        .shadow(color: (showTopGradient ? topColors[0] : bottomColors[0]).opacity(0.1), radius: 5, x: 2, y: 2)
+        .shadow(color: (showFirstGradient ? firstPalette.colors[0] : secondPalette.colors[0]).opacity(0.1), radius: 5, x: 2, y: 2)
         .animation(.easeOut)
         .scaleEffect(isTapped ? 1.05 : 1)
         .animation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0))
         .onTapGesture {
-            self.showTopGradient = !self.showTopGradient
             self.isTapped = true
-            self.setNextColors()
+            self.swapGradients()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 self.isTapped = false
             }

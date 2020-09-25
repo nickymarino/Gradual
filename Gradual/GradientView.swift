@@ -41,7 +41,6 @@ struct GradientSubView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            // on change: https://stackoverflow.com/a/62523475/2597913
             LinearGradient(gradient: Gradient(colors: self.colors), startPoint: .topLeading, endPoint: .bottomTrailing)
                 .onChange(of: self.captureGradient) { value in
                     // Leave if the flag is being unset
