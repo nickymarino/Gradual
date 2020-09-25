@@ -32,7 +32,12 @@ class Palette: ObservableObject {
         [Color.pink, Color.yellow],
         [Color.red, Color.purple],
         [Color.green, Color.white],
-        [Color.purple, Color.black]
+        [Color.purple, Color.black],
+        [Color.pink, Color.red],
+        [Color.black, Color.blue],
+        [Color.yellow, Color.orange],
+        [Color.gray, Color.black],
+        [Color.red, Color.orange]
     ]
 
     private func newColor() -> [Color] {
