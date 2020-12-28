@@ -20,29 +20,14 @@ struct ContentView: View {
             ZStack {
                 CardView(image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
                     .padding(20)
-
-                Image(systemName: "heart")
-                    .font(.system(.largeTitle))
-                    .onTapGesture {
-                    }
             }
             
             HStack {
-                Spacer()
-                Image(systemName: "paintbrush")
-                    .font(.system(.largeTitle))
-                    .onTapGesture {
-                    }
                 Spacer()
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(.largeTitle))
                     .onTapGesture {
                         self.captureGradient = true
-                    }
-                Spacer()
-                Image(systemName: "list.bullet")
-                    .font(.system(.largeTitle))
-                    .onTapGesture {
                     }
                 Spacer()
             }
@@ -51,6 +36,7 @@ struct ContentView: View {
         .sheet(isPresented: $showShareSheet, onDismiss: {self.showShareSheet = false}) {
             ActivityView(activityItems: [self.image] as [Any], applicationActivities: nil)
         }
+        .navigationTitle("Gradual")
     }
 }
 
