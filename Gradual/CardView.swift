@@ -15,10 +15,13 @@ struct CardView: View {
     @Binding var showShareSheet: Bool
     /// Toggle to start an image capture
     @Binding var captureGradient: Bool
-    
+
+    /// Tells whether the view is currently in a tap animation
     @State private var isTapped = false
+    /// Toggle for showing either the first palette or the second
     @State private var showFirstGradient = true
 
+    /// Palettes that set the color gradients
     @ObservedObject private var firstPalette = Palette()
     @ObservedObject private var secondPalette = Palette()
 
@@ -56,7 +59,6 @@ struct CardView: View {
         }
     }
 }
-
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {

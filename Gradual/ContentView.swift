@@ -21,7 +21,8 @@ struct ContentView: View {
                 CardView(image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
                     .padding(20)
             }
-            
+
+            // Share button
             HStack {
                 Spacer()
                 Image(systemName: "square.and.arrow.up")
@@ -36,7 +37,6 @@ struct ContentView: View {
         .sheet(isPresented: $showShareSheet, onDismiss: {self.showShareSheet = false}) {
             ActivityView(activityItems: [self.image] as [Any], applicationActivities: nil)
         }
-        .navigationTitle("Gradual")
     }
 }
 
