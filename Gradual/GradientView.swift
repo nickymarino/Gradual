@@ -9,7 +9,7 @@
 import SwiftUI
 
 /// Because `GradientSubView` will crash on `self.takeScreenshot` if it has any
-/// `@State` vars, this is a wrapper to hold it's state variables and pass them as
+/// `@State` vars, this is a wrapper to hold its state variables and pass them as
 /// bindings.
 ///
 /// Because `View.onChanged` fires after the Share Sheet is presented, this wrapper

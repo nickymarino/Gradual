@@ -17,9 +17,15 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            CardView(image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
-                .padding(20)
-            
+            ZStack {
+                CardView(image: $image, showShareSheet: $showShareSheet, captureGradient: $captureGradient)
+                    .padding(20)
+
+                Image(systemName: "heart")
+                    .font(.system(.largeTitle))
+                    .onTapGesture {
+                    }
+            }
             
             HStack {
                 Spacer()
@@ -28,15 +34,15 @@ struct ContentView: View {
                     .onTapGesture {
                     }
                 Spacer()
-                Image(systemName: "heart")
-                    .font(.system(.largeTitle))
-                    .onTapGesture {
-                    }
-                Spacer()
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(.largeTitle))
                     .onTapGesture {
                         self.captureGradient = true
+                    }
+                Spacer()
+                Image(systemName: "list.bullet")
+                    .font(.system(.largeTitle))
+                    .onTapGesture {
                     }
                 Spacer()
             }
@@ -50,10 +56,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ContentView()
-            ContentView()
-        }
+        ContentView()
     }
 }
 
